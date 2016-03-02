@@ -170,17 +170,18 @@ void createLeft(int blue, int beg, long long res){
 
 void makeGraph(int r_l, int r_r, int blue){
   int z=0;
-  int all = ciagi[r_l][blue-2].size();
+//  int all = ciagi[r_l][blue-2].size();
+//  int all2 = ciagi[r_r][blue-2].size();
+//  cerr<<" all "<<all<<" "<<all2<<"\n";
   for (int i =0; i<ciagi[r_l][blue-2].size();i++){
     for (int j =0; j<ciagi[r_r][blue-2].size();j++){
       graf *g = new graf();
-      for (int i= 0; i <blue+1;i++){
+      for (int i2= 0; i2 <blue+1;i2++){
         vector<int> v;
         g->push_back(v);
       }
       init(g,blue);
       z++;
-      if (z%1000==0) cerr<<z<<"/"<<all*all<<"\n";
       endGraf(g,i,j,blue,r_l,r_r);
       if (check(g,blue,r_l+r_r)) {
 
@@ -190,11 +191,11 @@ void makeGraph(int r_l, int r_r, int blue){
       delete g;
     }
   }
-  //createLeft(2*6-2,1,0);
 }
 
 
 
+//input - number of blue and red verticles
 int main(){
   int blue,r_l,r_p,r;
   cin>>blue>>r;
