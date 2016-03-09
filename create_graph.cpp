@@ -92,14 +92,6 @@ bool podzbior(vector<int> &v1, vector<int>&v2){
       return false;}
 
   }
-  /*cout<<"wektory\n";
-    for (int i =0;i<v1.size();i++){
-    cout<<v1[i]<<" ";
-    }
-    cout<<"\n";
-    for (int i =0;i<v2.size();i++){
-    cout<<v2[i]<<" ";
-    }*/
   return true;
 }
 bool rule1(vector<vector<int> > *graf, int blue, int red) {
@@ -107,7 +99,6 @@ bool rule1(vector<vector<int> > *graf, int blue, int red) {
   for(int i = 1; i < graf->size();i++){
     for(int j = i+1; j<graf->size();j++){
       if (podzbior((*graf)[i],(*graf)[j])||podzbior((*graf)[j],(*graf)[i]))  {
-        //cerr<<"not rule1\n";
         return false;
       }
     }
@@ -121,8 +112,6 @@ bool rule12(vector<vector<int> > *graf, int blue, int red) {
     for(int j = i+1; j<g2->size();j++){
       if (podzbior((*g2)[i],(*g2)[j])||podzbior((*g2)[j],(*g2)[i]))  {
         delete g2;
-        //cout<<"i "<<i<<" j "<<j<<"\n";
-        //cerr<<"not rule12\n";
         return false;
       }
     }
@@ -170,9 +159,7 @@ void createLeft(int blue, int beg, long long res){
 
 void makeGraph(int r_l, int r_r, int blue){
   int z=0;
-//  int all = ciagi[r_l][blue-2].size();
-//  int all2 = ciagi[r_r][blue-2].size();
-//  cerr<<" all "<<all<<" "<<all2<<"\n";
+  cerr<<" all "<<ciagi[r_l][blue-2].size()<<"\n";
   for (int i =0; i<ciagi[r_l][blue-2].size();i++){
     for (int j =0; j<ciagi[r_r][blue-2].size();j++){
       graf *g = new graf();
