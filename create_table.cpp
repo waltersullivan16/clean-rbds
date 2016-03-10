@@ -9,12 +9,7 @@ struct wynik {
 	int o;
 	int min;
 };
-struct otoczkaS {
-	int w1;
-	int w2;
-	int w3;
-	int w4;
-};
+
 otoczkaS currOtoczka;
 int otoczka = 4;
 
@@ -26,9 +21,6 @@ void wypiszGraf(vector<vector<int> > &graf){
 		cerr<<"\n";
 	}
 }
-
-
-int blue;
 
 void wczytajGraf(vector<vector<int> > &graf){
 	int size;
@@ -62,8 +54,8 @@ set<int> kolorujOtoczke(vector<vector<int> > &graf, vector<int> wybrane, int oto
 }
 set<int> oto;
 vector<vector<vector<int> > > podzbiory;
-vector<vector<vector<int> > > podzbiory2; 
-vector<vector<int> > podOt; 
+vector<vector<vector<int> > > podzbiory2;
+vector<vector<int> > podOt;
 
 void wypiszSet(set<int> &s){
 	for(set<int>::iterator iter=s.begin(); iter!=s.end();++iter) {
@@ -105,7 +97,7 @@ int najmniejszeKolorowanie(vector<vector<int> > & graf, set<int> &pokolorowane, 
 }
 
 bool szukaj(vector<vector<int> >& graf, wynik r, int w, int o, int min, vector<int>& v){
-	if ((r.w==w)&&(r.o==o)&&(r.min==min)) {wypiszGraf(graf); 
+	if ((r.w==w)&&(r.o==o)&&(r.min==min)) {wypiszGraf(graf);
 		cout<<"\n\nwzieta\n";
 		for (int i =0;i<v.size();i++) cout<<v[i]<<" "<<"\n";
 		cout<<"\n";
@@ -144,11 +136,7 @@ inline bool operator<(const wynik& lhs, const wynik& rhs)
 	return lhs.w<rhs.w;
 }
 void wczytajOtoczke(){
-	cin>>currOtoczka.w1;
-	cin>>currOtoczka.w2;
-	cin>>currOtoczka.w3;
-	cin>>currOtoczka.w4;
-	podzbiory =  {{{0}},{{1}},{{1},{2},{1,2}},{{1},{2},{3},{1,2},{1,3},{2,3},{1,2,3}},{{1},{2},{blue-1},{blue},{1,2},{1,blue-1},{1,blue},{2,blue-1},{2,blue},{blue-1,blue},{1,2,blue-1},{1,2,blue},{2,blue-1,blue},{1,2,blue-1,blue}}};
+	podzbiory_otoczki =  {{{0}},{{1}},{{1},{2},{1,2}},{{1},{2},{3},{1,2},{1,3},{2,3},{1,2,3}},{{1},{2},{blue-1},{blue},{1,2},{1,blue-1},{1,blue},{2,blue-1},{2,blue},{blue-1,blue},{1,2,blue-1},{1,2,blue},{2,blue-1,blue},{1,2,blue-1,blue}}};
 	oto = {currOtoczka.w1,currOtoczka.w2,currOtoczka.w3,currOtoczka.w4};
 	podOt =  {{currOtoczka.w1},{currOtoczka.w2},{currOtoczka.w3},{currOtoczka.w4},{currOtoczka.w1,currOtoczka.w2},{currOtoczka.w1,currOtoczka.w3},{currOtoczka.w1,currOtoczka.w4},{currOtoczka.w2,currOtoczka.w3},{currOtoczka.w2,currOtoczka.w4},{currOtoczka.w3,currOtoczka.w4},{currOtoczka.w1,currOtoczka.w2,currOtoczka.w3},{currOtoczka.w1,currOtoczka.w2,currOtoczka.w4},{currOtoczka.w2,currOtoczka.w3,currOtoczka.w4},{currOtoczka.w1,currOtoczka.w2,currOtoczka.w3,currOtoczka.w4}};
 	podzbiory2 = {
@@ -161,12 +149,12 @@ void wczytajOtoczke(){
 		{{3},{4},{5},{6},{7},{8},{3,4},{3,5},{3,6},{3,7},{3,8},{4,5},{4,6},{4,7},{4,8},{5,6},{5,7},{5,8},{6,7},{6,8},{3,4,5},{3,4,6},{3,4,7},{3,4,8},{3,5,6},{3,5,7},{3,5,8},{3,6,7},{3,6,8},{3,7,8},{4,5,6},{4,5,7},{4,5,8},{4,6,7},{4,6,8},{4,7,8},{5,6,7},{5,6,8},{5,7,8},{3,4,5,6},{3,4,5,7},{3,4,5,8},{3,4,6,7},{3,4,6,8},{3,4,7,8},{3,5,6,7},{3,5,6,8},{3,5,7,8},{4,5,6,7},{4,5,6,8},{4,5,7,8},{4,6,7,8},{5,6,7,8},{3,4,5,6,7},{3,4,5,6,8},{4,5,6,7,8},{3,4,5,6,7,8}},};
 }
 int main(){
-	int n;
-	int red = 8;
+	int n, blue, red;
 	set<vector<wynik> > wynikSet;
-	wczytajOtoczke();
-	cin >> n;
+	cin >> n >> blue >> red;
 	cerr<<"all graphs "<<n<<"\n";
+  //ONLY FOR TESTS TODO Change that!
+  n = 1;
 	for (int i = 0;i<n;i++){
 		vector<int> wybraneOtoczka;
 		vector<vector<int> > graf;
@@ -191,7 +179,7 @@ int main(){
 				int naj = najmniejszeKolorowanie(graf,s,red,otoczka);
 				//			cout<<"naj "<<naj<<"\n";
 				wynik r;
-				r.w = wybrane;	
+				r.w = wybrane;
 				r.o=ot;
 				r.min = naj;
 
