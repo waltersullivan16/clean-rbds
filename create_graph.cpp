@@ -171,7 +171,6 @@ void makeGraph(int r_l, int r_r, int blue){
       z++;
       endGraf(g,i,j,blue,r_l,r_r);
       if (check(g,blue,r_l+r_r)) {
-
         wypiszGraf(g);
         all_graphs++;
       }
@@ -179,8 +178,6 @@ void makeGraph(int r_l, int r_r, int blue){
     }
   }
 }
-
-
 
 //input - number of blue and red verticles
 int main(){

@@ -27,6 +27,7 @@ void wypiszGraf(vector<vector<int> > &graf){
 void wczytajGraf(vector<vector<int> > &graf){
 	int size;
 	cin >> size;
+  cerr<<"size "<<size<<"\n";
 	for (int i = 0; i < size; i++) {
 		int m;
 		cin >> m;
@@ -42,12 +43,12 @@ void wczytajGraf(vector<vector<int> > &graf){
 
 set<int> kolorujOtoczke(vector<vector<int> > &graf, vector<int> wybrane){
 	set<int> res;
-	cerr<<"size "<<wybrane.size()<<"\n";
+//	cerr<<"size "<<wybrane.size()<<"\n";
 	for(int i = 0; i<wybrane.size();i++)
 	{
-		cerr<<"graf "<<graf[wybrane[i]].size()<<" wybrane[i] "<<wybrane[i]<<"\n";
+//		cerr<<"graf "<<graf[wybrane[i]].size()<<" wybrane[i] "<<wybrane[i]<<"\n";
 		for (int j = 0; j<graf[wybrane[i]-1].size();j++){
-			cerr<<graf[wybrane[i]-1][j]<<" ";
+			//cerr<<graf[wybrane[i]-1][j]<<" ";
 			res.insert(graf[wybrane[i]-1][j]);
 		}
 	}
@@ -74,14 +75,15 @@ void wypiszVectorWynik(set<vector<wynik> > &s){
 int najmniejszeKolorowanie(vector<vector<int> > & graf, set<int> &pokolorowane, int red){
 	if (pokolorowane.size() == red) return 0;
 	int res = -1;
+  //cerr<<"pokolorowane "<<pokolorowane.size()<<" "<<red<<"\n";
 	for(int i = 0; i<choices.size();i++){
 		set<int> pok = pokolorowane;
-		//		cout<<"red "<<red<<" ile "<<ile<<" otoczka "<<otoczka<<" pokolorowane "<<pokolorowane.size()<<" "<<graf.size()<<" "<<otoczka<<"\n";
+//				cout<<"red "<<red<< " pokolorowane "<<pokolorowane.size()<<" "<<graf.size()<<"\n";
 		for(int j = 0; j<choices[i].size();j++){
 			//	cout<<"ile "<<ile<<" i "<<i<<" j "<<j<<" pod "<<podzbiory2[ile][i][j]-1<<"\n";
 			for (int z = 0; z <graf[choices[i][j]-1].size();z++) {
 				pok.insert(graf[choices[i][j]-1][z]);
-				//cout<<graf[podzbiory2[ile][i][j]-1][z]<<" ";
+				//cerr<<"c "<<i<<" j "<<j<<" "<<graf[choices[i][j]-1][z]<<" ";
 			}
 		}
 		//	cout<<"koniec\n";
@@ -113,6 +115,7 @@ int countOtoczka(set<int> &s){
 
 void addPodOt(set<int> &s, int h){
 	for(int i =0; i<podzbiory_otoczki_red[h].size();i++) {
+ //   cout<<"specjalne"<<podzbiory_otoczki_red[h][i]<<"\n";
 
 		s.insert(podzbiory_otoczki_red[h][i]);
 	}
@@ -129,7 +132,7 @@ inline bool operator<(const wynik& lhs, const wynik& rhs)
 	return lhs.w<rhs.w;
 }
 
-struct otoczka{
+struct otoczka_struct{
       int w1;
       int w2;
       int w3;
@@ -139,14 +142,15 @@ struct otoczka{
 void wczytaj_otoczke_blue(int blue){
 	podzbiory_otoczki_blue =  {{1},{2},{blue-1},{blue},{1,2},{1,blue-1},{1,blue},{2,blue-1},{2,blue},{blue-1,blue},{1,2,blue-1},{1,2,blue},{2,blue-1,blue},{1,2,blue-1,blue}};
 	choices = {
-		{3},{4},{5},{6},{7},{8},{3,4},{3,5},{3,6},{3,7},{3,8},{4,5},{4,6},{4,7},{4,8},{5,6},{5,7},{5,8},{6,7},{6,8},{3,4,5},{3,4,6},{3,4,7},{3,4,8},{3,5,6},{3,5,7},{3,5,8},{3,6,7},{3,6,8},{3,7,8},{4,5,6},{4,5,7},{4,5,8},{4,6,7},{4,6,8},{4,7,8},{5,6,7},{5,6,8},{5,7,8},{3,4,5,6},{3,4,5,7},{3,4,5,8},{3,4,6,7},{3,4,6,8},{3,4,7,8},{3,5,6,7},{3,5,6,8},{3,5,7,8},{4,5,6,7},{4,5,6,8},{4,5,7,8},{4,6,7,8},{5,6,7,8},{3,4,5,6,7},{3,4,5,6,8},{4,5,6,7,8},{3,4,5,6,7,8}};
+		{3},{4},{5},{6},{7},{3,4},{3,5},{3,6},{3,7},{4,5},{4,6},{4,7},{5,6},{5,7},{6,7},{3,4,5},{3,4,6},{3,4,7},{3,5,6},{3,5,7},{3,6,7},{4,5,6},{4,5,7},{4,6,7},{5,6,7},{3,4,5,6},{3,4,5,7},{3,4,6,7},{3,5,6,7},{4,5,6,7},{3,4,5,6,7}};
 }
 
 void wczytaj_otoczke_red(){
-  struct otoczka current_otoczka;
+  struct otoczka_struct current_otoczka;
   cin >> current_otoczka.w1 >> current_otoczka.w2 >> current_otoczka.w3 >> current_otoczka.w4;
+  //cerr<<current_otoczka.w1<< current_otoczka.w2 << current_otoczka.w3 << current_otoczka.w4<<"\n";
   otoczka = {current_otoczka.w1, current_otoczka.w2, current_otoczka.w3, current_otoczka.w4};
-	podzbiory_otoczki_red =  {{current_otoczka.w1},{current_otoczka.w2},{current_otoczka.w3},{current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2},{current_otoczka.w1,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3},{current_otoczka.w2,current_otoczka.w4},{current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3,current_otoczka.w4}};
+	podzbiory_otoczki_red =  {{}, {current_otoczka.w1},{current_otoczka.w2},{current_otoczka.w3},{current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2},{current_otoczka.w1,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3},{current_otoczka.w2,current_otoczka.w4},{current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3,current_otoczka.w4}};
 }
 int main(){
 	int n, blue, red;
@@ -159,29 +163,29 @@ int main(){
 	for (int i = 0;i<n;i++){
 		vector<int> wybrane_do_otoczki;
 		vector<vector<int> > graf;
+    wczytaj_otoczke_red();
 		wczytajGraf(graf);
 		wypiszGraf(graf);
-    wczytaj_otoczke_red();
 		vector<wynik> v;
-		for (int h = 0; h < choices.size(); h++){
-			for (int h2 = 0; h2 < podzbiory_otoczki_red.size(); h2++){
-				cerr<<"beginning of the loop\n";
-				set<int> s = kolorujOtoczke(graf,choices[h]);
+		//for (int h = 3; h < 4; h++){
+		for (int h2 = 0; h2 < podzbiory_otoczki_red.size(); h2++){
+		  for (int h = 0; h < podzbiory_otoczki_blue.size(); h++){
+				//cerr<<"beginning of the loop\n";
+				set<int> s = kolorujOtoczke(graf,podzbiory_otoczki_blue[h]);
 				addPodOt(s,h2);
-				//	wypiszSet(s);
-				cerr<<"koloruj\n";
+				//cerr<<"koloruj\n";
 				int wybrane = podzbiory_otoczki_blue[h].size();
-				cerr<<"ilosc wybranyc wierzcholkow "<<wybrane<<"\n";
+				//cerr<<"ilosc wybranyc wierzcholkow "<<wybrane<<"\n";
 				int ot = countOtoczka(s);
-				cerr<<"ilosc wierzcholkow na otoczce "<<ot<<"\n";
+				//cerr<<"ilosc wierzcholkow na otoczce "<<ot<<"\n";
 
 				int naj = najmniejszeKolorowanie(graf,s,red);
-				cerr<<"najmniejsze kolorowanie dla tego wyboru "<<naj<<"\n";
+				//cerr<<"najmniejsze kolorowanie dla tego wyboru "<<naj<<"\n";
 				wynik r;
 				r.w = wybrane;
 				r.o=ot;
 				r.min = naj;
-				//				if (szukaj(graf,r,2,4,3, podzbiory[otoczka][h])) return 1;
+				//if (szukaj(graf,r,2,4,3, podzbiory[otoczka][h])) return 1;
 				v.push_back(r);
 			}
 		}
