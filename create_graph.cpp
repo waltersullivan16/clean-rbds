@@ -171,6 +171,7 @@ void makeGraph(int r_l, int r_r, int blue){
       z++;
       endGraf(g,i,j,blue,r_l,r_r);
       if (check(g,blue,r_l+r_r)) {
+        cout<<1<<" "<<r_l<<" "<<r_l+1<<" "<<r_r+r_l<<"\n";
         wypiszGraf(g);
         all_graphs++;
       }
@@ -183,6 +184,7 @@ void makeGraph(int r_l, int r_r, int blue){
 int main(){
   int blue,r_l,r_p,r;
   cin>>blue>>r;
+  cout<<blue<<" "<<r<<"\n";
   r_l=0;
   r_p=r;
 

@@ -13,14 +13,15 @@ struct wynik {
 	int w;
 	int o;
 	int min;
+  int red;
 };
 
 void wypiszGraf(vector<vector<int> > &graf){
 	for(int i = 0;i<graf.size();i++){
 		for(int j=0; j<graf[i].size();j++){
-			cerr<<graf[i][j]<<" ";
+			cout<<graf[i][j]<<" ";
 		}
-		cerr<<"\n";
+		cout<<"\n";
 	}
 }
 
@@ -65,7 +66,7 @@ void wypiszVectorWynik(set<vector<wynik> > &s){
 	cout<<s.size()<<"\n";
 	for(set<vector<wynik> >::iterator it = s.begin(); it!=s.end();it++){
 		for(int i = 0; i<(*it).size();i++){
-			cout<<(*it)[i].w<<" "<<(*it)[i].o<<" "<<(*it)[i].min<<"\n";
+			cout<<(*it)[i].w<<" "<<(*it)[i].o<<" "<<(*it)[i].min<<" "<<(*it)[i].red<<"\n";
 		}
 		cout<<"\n";
 	}
@@ -94,11 +95,18 @@ int najmniejszeKolorowanie(vector<vector<int> > & graf, set<int> &pokolorowane, 
 
 }
 
-bool szukaj(vector<vector<int> >& graf, wynik r, int w, int o, int min, vector<int>& v){
-	if ((r.w==w)&&(r.o==o)&&(r.min==min)) {wypiszGraf(graf);
-		cout<<"\n\nwzieta\n";
-		for (int i =0;i<v.size();i++) cout<<v[i]<<" "<<"\n";
-		cout<<"\n";
+bool szukaj(vector<vector<int> >& graf, wynik r, int w, int o, int min, int red, vector<int>& v,
+    vector<int>& red_v){
+	if ((r.w==w)&&(r.o==o)&&(r.min==min) && (r.red==red)) {
+    wypiszGraf(graf);
+    cout<<"blue\n";
+    for (int i = 0; i< v.size(); i++) cout<<v[i]<<" ";
+    cout<<"\nred\n";
+    for (int i = 0; i< red_v.size(); i++) cout<<red_v[i]<<" ";
+    cout<<"\notoczka\n";
+    wypiszSet(otoczka);
+    cout<<podzbiory_otoczki_red[4][0];
+    cout<<"\n";
 		return true;
 	}
 	return false;
@@ -141,14 +149,23 @@ struct otoczka_struct{
 
 void wczytaj_otoczke_blue(int blue){
 	podzbiory_otoczki_blue =  {{1},{2},{blue-1},{blue},{1,2},{1,blue-1},{1,blue},{2,blue-1},{2,blue},{blue-1,blue},{1,2,blue-1},{1,2,blue},{2,blue-1,blue},{1,2,blue-1,blue}};
-	choices = {
+ //choices for 9 blue verticles
+/*	choices = {
 		{3},{4},{5},{6},{7},{3,4},{3,5},{3,6},{3,7},{4,5},{4,6},{4,7},{5,6},{5,7},{6,7},{3,4,5},{3,4,6},{3,4,7},{3,5,6},{3,5,7},{3,6,7},{4,5,6},{4,5,7},{4,6,7},{5,6,7},{3,4,5,6},{3,4,5,7},{3,4,6,7},{3,5,6,7},{4,5,6,7},{3,4,5,6,7}};
+    */
+  ///choices for 8 vertices
+choices = {
+		{3},{4},{5},{6},{3,4},{3,5},{3,6},{4,5},{4,6},{5,6},{3,4,5},{3,4,6},{3,5,6},{4,5,6},{3,4,5,6}};
+
+/*choices = {
+		{3},{4},{5},{3,4},{3,5},{4,5},{3,4,5}};
+    */
 }
 
 void wczytaj_otoczke_red(){
   struct otoczka_struct current_otoczka;
   cin >> current_otoczka.w1 >> current_otoczka.w2 >> current_otoczka.w3 >> current_otoczka.w4;
-  //cerr<<current_otoczka.w1<< current_otoczka.w2 << current_otoczka.w3 << current_otoczka.w4<<"\n";
+  cerr<<current_otoczka.w1<< current_otoczka.w2 << current_otoczka.w3 << current_otoczka.w4<<"\n";
   otoczka = {current_otoczka.w1, current_otoczka.w2, current_otoczka.w3, current_otoczka.w4};
 	podzbiory_otoczki_red =  {{}, {current_otoczka.w1},{current_otoczka.w2},{current_otoczka.w3},{current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2},{current_otoczka.w1,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3},{current_otoczka.w2,current_otoczka.w4},{current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3,current_otoczka.w4}};
 }
@@ -158,21 +175,19 @@ int main(){
 	cin >> n >> blue >> red;
 	cerr<<"all graphs "<<n<<"\n";
   wczytaj_otoczke_blue(blue);
-  //ONLY FOR TESTS TODO Change that!
-  n = 1;
-	for (int i = 0;i<n;i++){
+  int i = 40;
+	//for (int i = 0;i<n;i++){
 		vector<int> wybrane_do_otoczki;
 		vector<vector<int> > graf;
     wczytaj_otoczke_red();
 		wczytajGraf(graf);
-		wypiszGraf(graf);
-		vector<wynik> v;
-		//for (int h = 3; h < 4; h++){
-		for (int h2 = 0; h2 < podzbiory_otoczki_red.size(); h2++){
+		//wypiszGraf(graf);
+	//	for (int h2 = 0; h2 < podzbiory_otoczki_red.size(); h2++){
+		  vector<wynik> v;
 		  for (int h = 0; h < podzbiory_otoczki_blue.size(); h++){
 				//cerr<<"beginning of the loop\n";
 				set<int> s = kolorujOtoczke(graf,podzbiory_otoczki_blue[h]);
-				addPodOt(s,h2);
+				//addPodOt(s,h2);
 				//cerr<<"koloruj\n";
 				int wybrane = podzbiory_otoczki_blue[h].size();
 				//cerr<<"ilosc wybranyc wierzcholkow "<<wybrane<<"\n";
@@ -185,12 +200,13 @@ int main(){
 				r.w = wybrane;
 				r.o=ot;
 				r.min = naj;
-				//if (szukaj(graf,r,2,4,3, podzbiory[otoczka][h])) return 1;
+        r.red = 0;
+			//	(szukaj(graf,r,1,2,4,0, podzbiory_otoczki_blue[h], podzbiory_otoczki_red[0]));
 				v.push_back(r);
 			}
-		}
+		  wynikSet.insert(v);
+	//	}
 
-		wynikSet.insert(v);
-		}
+	//	}
 		wypiszVectorWynik(wynikSet);
 	}
