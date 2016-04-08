@@ -28,7 +28,7 @@ void wypiszGraf(vector<vector<int> > &graf){
 void wczytajGraf(vector<vector<int> > &graf){
 	int size;
 	cin >> size;
-  cerr<<"size "<<size<<"\n";
+ // cerr<<"size "<<size<<"\n";
 	for (int i = 0; i < size; i++) {
 		int m;
 		cin >> m;
@@ -97,7 +97,8 @@ int najmniejszeKolorowanie(vector<vector<int> > & graf, set<int> &pokolorowane, 
 
 bool szukaj(vector<vector<int> >& graf, wynik r, int w, int o, int min, int red, vector<int>& v,
     vector<int>& red_v){
-	if ((r.w==w)&&(r.o==o)&&(r.min==min) && (r.red==red)) {
+	if ((r.min==min) && (r.red==red)) {
+    return true;
     wypiszGraf(graf);
     cout<<"blue\n";
     for (int i = 0; i< v.size(); i++) cout<<v[i]<<" ";
@@ -148,24 +149,24 @@ struct otoczka_struct{
 };
 
 void wczytaj_otoczke_blue(int blue){
-	podzbiory_otoczki_blue =  {{1},{2},{blue-1},{blue},{1,2},{1,blue-1},{1,blue},{2,blue-1},{2,blue},{blue-1,blue},{1,2,blue-1},{1,2,blue},{2,blue-1,blue},{1,2,blue-1,blue}};
- //choices for 9 blue verticles
-/*	choices = {
+	podzbiory_otoczki_blue =  {{}, {1},{2},{blue-1},{blue}};
+ //choices for 9 blue verticles*
+ /*	choices = {
 		{3},{4},{5},{6},{7},{3,4},{3,5},{3,6},{3,7},{4,5},{4,6},{4,7},{5,6},{5,7},{6,7},{3,4,5},{3,4,6},{3,4,7},{3,5,6},{3,5,7},{3,6,7},{4,5,6},{4,5,7},{4,6,7},{5,6,7},{3,4,5,6},{3,4,5,7},{3,4,6,7},{3,5,6,7},{4,5,6,7},{3,4,5,6,7}};
-    */
+*/
   ///choices for 8 vertices
 choices = {
 		{3},{4},{5},{6},{3,4},{3,5},{3,6},{4,5},{4,6},{5,6},{3,4,5},{3,4,6},{3,5,6},{4,5,6},{3,4,5,6}};
 
 /*choices = {
 		{3},{4},{5},{3,4},{3,5},{4,5},{3,4,5}};
-    */
+*/
 }
 
 void wczytaj_otoczke_red(){
   struct otoczka_struct current_otoczka;
   cin >> current_otoczka.w1 >> current_otoczka.w2 >> current_otoczka.w3 >> current_otoczka.w4;
-  cerr<<current_otoczka.w1<< current_otoczka.w2 << current_otoczka.w3 << current_otoczka.w4<<"\n";
+  //cerr<<current_otoczka.w1<< current_otoczka.w2 << current_otoczka.w3 << current_otoczka.w4<<"\n";
   otoczka = {current_otoczka.w1, current_otoczka.w2, current_otoczka.w3, current_otoczka.w4};
 	podzbiory_otoczki_red =  {{}, {current_otoczka.w1},{current_otoczka.w2},{current_otoczka.w3},{current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2},{current_otoczka.w1,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3},{current_otoczka.w2,current_otoczka.w4},{current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3,current_otoczka.w4}};
 }
@@ -175,19 +176,19 @@ int main(){
 	cin >> n >> blue >> red;
 	cerr<<"all graphs "<<n<<"\n";
   wczytaj_otoczke_blue(blue);
-  int i = 40;
-	//for (int i = 0;i<n;i++){
+	for (int i = 0;i<n;i++){
 		vector<int> wybrane_do_otoczki;
 		vector<vector<int> > graf;
     wczytaj_otoczke_red();
 		wczytajGraf(graf);
 		//wypiszGraf(graf);
-	//	for (int h2 = 0; h2 < podzbiory_otoczki_red.size(); h2++){
 		  vector<wynik> v;
+      int szukaj_w = 0;
+		for (int h2 = 0; h2 < podzbiory_otoczki_red.size(); h2++){
 		  for (int h = 0; h < podzbiory_otoczki_blue.size(); h++){
 				//cerr<<"beginning of the loop\n";
 				set<int> s = kolorujOtoczke(graf,podzbiory_otoczki_blue[h]);
-				//addPodOt(s,h2);
+				addPodOt(s,h2);
 				//cerr<<"koloruj\n";
 				int wybrane = podzbiory_otoczki_blue[h].size();
 				//cerr<<"ilosc wybranyc wierzcholkow "<<wybrane<<"\n";
@@ -195,18 +196,24 @@ int main(){
 				//cerr<<"ilosc wierzcholkow na otoczce "<<ot<<"\n";
 
 				int naj = najmniejszeKolorowanie(graf,s,red);
+        if ((wybrane+naj)>2) naj = -2;
 				//cerr<<"najmniejsze kolorowanie dla tego wyboru "<<naj<<"\n";
 				wynik r;
 				r.w = wybrane;
 				r.o=ot;
 				r.min = naj;
-        r.red = 0;
-			//	(szukaj(graf,r,1,2,4,0, podzbiory_otoczki_blue[h], podzbiory_otoczki_red[0]));
+        r.red = h2;
+        cerr<<"h2"<<h2<<"\n";
+				if (szukaj(graf,r,1,2,-2,14, podzbiory_otoczki_blue[h], podzbiory_otoczki_red[0]));
+        szukaj_w++;
+        if (szukaj_w==5){
+          wypiszGraf(graf);
+        }
 				v.push_back(r);
 			}
+		}
 		  wynikSet.insert(v);
-	//	}
 
-	//	}
-		wypiszVectorWynik(wynikSet);
+		}
+	//	wypiszVectorWynik(wynikSet);
 	}

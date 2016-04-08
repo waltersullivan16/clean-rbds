@@ -35,7 +35,7 @@ set<vector<wynik> > s1;
 set<vector<wynik> > s2;
 for (int i =0; i<n1;i++){
 	vector<wynik> v;
-	for (int j = 0; j<14; j++){
+	for (int j = 0; j<75; j++){
 		wynik w;
 		cin>>w.w;
 		cin>>w.o;
@@ -48,7 +48,7 @@ for (int i =0; i<n1;i++){
 cin>>n2;
 for (int i =0; i<n2;i++){
 	vector<wynik> v;
-	for (int j = 0; j<14; j++){
+	for (int j = 0; j<75; j++){
 		wynik w;
 		cin>>w.w;
 		cin>>w.o;
