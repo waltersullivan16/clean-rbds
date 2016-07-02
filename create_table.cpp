@@ -148,28 +148,40 @@ struct otoczka_struct{
       int w4;
 };
 
-void wczytaj_otoczke_blue(int blue){
-	podzbiory_otoczki_blue =  {{}, {1},{2},{blue-1},{blue}};
- //choices for 9 blue verticles*
+void wczytaj_otoczke_blue(int blue, otoczka current_otoczka){
+	podzbiory_otoczki_blue =  {({},{}), ({1},{c}), {2},{blue-1},{blue}, {2, blue-1}};
+ //choices for 9 blue verticles*1
  /*	choices = {
 		{3},{4},{5},{6},{7},{3,4},{3,5},{3,6},{3,7},{4,5},{4,6},{4,7},{5,6},{5,7},{6,7},{3,4,5},{3,4,6},{3,4,7},{3,5,6},{3,5,7},{3,6,7},{4,5,6},{4,5,7},{4,6,7},{5,6,7},{3,4,5,6},{3,4,5,7},{3,4,6,7},{3,5,6,7},{4,5,6,7},{3,4,5,6,7}};
 */
   ///choices for 8 vertices
-choices = {
-		{3},{4},{5},{6},{3,4},{3,5},{3,6},{4,5},{4,6},{5,6},{3,4,5},{3,4,6},{3,5,6},{4,5,6},{3,4,5,6}};
+//choices = {
+//		{3},{4},{5},{6},{3,4},{3,5},{3,6},{4,5},{4,6},{5,6},{3,4,5},{3,4,6},{3,5,6},{4,5,6},{3,4,5,6}};
 
-/*choices = {
+choices = {
 		{3},{4},{5},{3,4},{3,5},{4,5},{3,4,5}};
-*/
+
 }
 
-void wczytaj_otoczke_red(){
+bool if_blue_in_red(set<int>& blue_set, set<int>& red_set, blue, otoczka& current_otoczka){
+  vector<set<int> > red_sasiedzi = [{}, {currcsharpent_otoczka.w1, current_otoczka.w2}, {current_otoczka.w1, current_otoczka.w3}, {current_otoczka.w2, current_otoczka.w4}, {current_otoczka.w3, current_otoczka.w4}, {current_otoczka.w1, current_otoczka.w2, current_otoczka.w3, current_otoczka.w4}];
+  for (set<int>::iterator it = blue_set.begin(); it != blue_set.end(); it++) {
+    if{
+  }
+}
+}
+
+//TODO napisać wywalanie otoczki red jeżeli zawiera się w sąsiadach blue
+
+otoczka wczytaj_otoczke_red(){
   struct otoczka_struct current_otoczka;
   cin >> current_otoczka.w1 >> current_otoczka.w2 >> current_otoczka.w3 >> current_otoczka.w4;
   //cerr<<current_otoczka.w1<< current_otoczka.w2 << current_otoczka.w3 << current_otoczka.w4<<"\n";
   otoczka = {current_otoczka.w1, current_otoczka.w2, current_otoczka.w3, current_otoczka.w4};
 	podzbiory_otoczki_red =  {{}, {current_otoczka.w1},{current_otoczka.w2},{current_otoczka.w3},{current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2},{current_otoczka.w1,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3},{current_otoczka.w2,current_otoczka.w4},{current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w4},{current_otoczka.w2,current_otoczka.w3,current_otoczka.w4},{current_otoczka.w1,current_otoczka.w2,current_otoczka.w3,current_otoczka.w4}};
+  return current_otoczka;
 }
+int EDGES = 5;
 int main(){
 	int n, blue, red;
 	set<vector<wynik> > wynikSet;
@@ -177,9 +189,10 @@ int main(){
 	cerr<<"all graphs "<<n<<"\n";
   wczytaj_otoczke_blue(blue);
 	for (int i = 0;i<n;i++){
+    cerr <<i<<"\n";
 		vector<int> wybrane_do_otoczki;
 		vector<vector<int> > graf;
-    wczytaj_otoczke_red();
+    otoczka current_otoczka = wczytaj_otoczke_red();
 		wczytajGraf(graf);
 		//wypiszGraf(graf);
 		  vector<wynik> v;
@@ -196,24 +209,19 @@ int main(){
 				//cerr<<"ilosc wierzcholkow na otoczce "<<ot<<"\n";
 
 				int naj = najmniejszeKolorowanie(graf,s,red);
-        if ((wybrane+naj)>2) naj = -2;
+        if ((wybrane+naj)>2 && h!=EDGES) naj = -2; //EDGES to wierzchołki 2 i 4 - nie chcemy ich uwzględniać w wykluczeniu, ponieważ kolorują inne rzeczy z otoczki
 				//cerr<<"najmniejsze kolorowanie dla tego wyboru "<<naj<<"\n";
 				wynik r;
 				r.w = wybrane;
 				r.o=ot;
 				r.min = naj;
         r.red = h2;
-        cerr<<"h2"<<h2<<"\n";
-				if (szukaj(graf,r,1,2,-2,14, podzbiory_otoczki_blue[h], podzbiory_otoczki_red[0]));
-        szukaj_w++;
-        if (szukaj_w==5){
-          wypiszGraf(graf);
-        }
+       // cerr<<"h2"<<h2<<"\n";
 				v.push_back(r);
 			}
 		}
 		  wynikSet.insert(v);
 
 		}
-	//	wypiszVectorWynik(wynikSet);
+		wypiszVectorWynik(wynikSet);
 	}
